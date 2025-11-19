@@ -293,6 +293,108 @@ def buscar_pais(paises):
     print(f"\n✓ Se encontraron {len(resultados)} resultado(s):\n")
     mostrar_paises(resultados)
 
+# ==================== FUNCIONES DE FILTRADO ====================
+
+def filtrar_por_continente(paises):
+    """
+    Filtra países por continente.
+    
+    Args:
+        paises (list): Lista de países
+    """
+    print("\n--- FILTRAR POR CONTINENTE ---")
+    continente = input("Continente: ").strip()
+    
+    if not continente:
+        print("⚠ Debe ingresar un continente.")
+        return
+    
+    resultados = []
+    for pais in paises:
+        if pais['continente'].lower() == continente.lower():
+            resultados.append(pais)
+    
+    if len(resultados) == 0:
+        print(f"⚠ No hay países en '{continente}'.")
+        return
+    
+    print(f"\n✓ Países en {continente}:\n")
+    mostrar_paises(resultados)
+
+
+def filtrar_por_poblacion(paises):
+    """
+    Filtra países por rango de población.
+    
+    Args:
+        paises (list): Lista de países
+    """
+    print("\n--- FILTRAR POR POBLACIÓN ---")
+    
+    minimo_str = input("Población mínima: ").strip()
+    maximo_str = input("Población máxima: ").strip()
+    
+    # Validar entrada
+    if not minimo_str.isdigit() or not maximo_str.isdigit():
+        print("⚠ Debe ingresar números válidos.")
+        return
+    
+    minimo = int(minimo_str)
+    maximo = int(maximo_str)
+    
+    if minimo > maximo:
+        print("⚠ El mínimo no puede ser mayor al máximo.")
+        return
+    
+    resultados = []
+    for pais in paises:
+        if minimo <= pais['poblacion'] <= maximo:
+            resultados.append(pais)
+    
+    if len(resultados) == 0:
+        print(f"⚠ No hay países con población entre {minimo:,} y {maximo:,}.")
+        return
+    
+    print(f"\n✓ Países con población entre {minimo:,} y {maximo:,}:\n")
+    mostrar_paises(resultados)
+
+
+def filtrar_por_superficie(paises):
+    """
+    Filtra países por rango de superficie.
+    
+    Args:
+        paises (list): Lista de países
+    """
+    print("\n--- FILTRAR POR SUPERFICIE ---")
+    
+    minimo_str = input("Superficie mínima (km²): ").strip()
+    maximo_str = input("Superficie máxima (km²): ").strip()
+    
+    # Validar entrada
+    if not minimo_str.isdigit() or not maximo_str.isdigit():
+        print("⚠ Debe ingresar números válidos.")
+        return
+    
+    minimo = int(minimo_str)
+    maximo = int(maximo_str)
+    
+    if minimo > maximo:
+        print("⚠ El mínimo no puede ser mayor al máximo.")
+        return
+    
+    resultados = []
+    for pais in paises:
+        if minimo <= pais['superficie'] <= maximo:
+            resultados.append(pais)
+    
+    if len(resultados) == 0:
+        print(f"⚠ No hay países con superficie entre {minimo:,} y {maximo:,} km².")
+        return
+    
+    print(f"\n✓ Países con superficie entre {minimo:,} y {maximo:,} km²:\n")
+    mostrar_paises(resultados)
+
 # ==================== FUNCIONES DE VISUALIZACIÓN ====================
 
 def mostrar_paises(paises):
@@ -322,6 +424,10 @@ def mostrar_menu():
     print("="*50)
     print("1.  Agregar país")
     print("2.  Actualizar país")
+    print("3.  Buscar país")
+    print("4.  Filtrar por continente")
+    print("5.  Filtrar por población")
+    print("6.  Filtrar por superficie")
     print("0.  Salir")
     print("="*50)
 
@@ -344,6 +450,14 @@ def menu():
             agregar_pais(paises)
         elif opcion == '2':
             actualizar_pais(paises)
+        elif opcion == '3':
+            buscar_pais(paises)
+        elif opcion == '4':
+            filtrar_por_continente(paises)
+        elif opcion == '5':
+            filtrar_por_poblacion(paises)
+        elif opcion == '6':
+            filtrar_por_superficie(paises)
         elif opcion == '0':
             print("\n¡Hasta pronto!")
             break
