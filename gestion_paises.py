@@ -9,9 +9,9 @@ import os
 
 PAISES_DEFAULT = [
     'nombre,poblacion,superficie,continente',
-    'Argentina,45376763,2780400,América',
+    'Argentina,45376763,2780400,América del Sur',
     'Japón,125800000,377975,Asia',
-    'Brasil,213993437,8515767,América',
+    'Brasil,213993437,8515767,América del Sur',
     'Alemania,83149300,357022,Europa'
 ]
 
@@ -197,14 +197,30 @@ def agregar_pais(paises):
     valido = False
     while not valido:
         sup_str = input("Superficie (km²): ").strip()
-        valido, superficie = validar_entero_positivo(sup_str, "La superficie")
+        valido, superficie = validar_entero_positivo(sup_str, "La superficie")    
     
-    # Validar continente (no vacío)
+    continentes = [
+        "África",
+        "América del Norte",
+        "América del Sur",
+        "Antártida",
+        "Asia",
+        "Europa",
+        "Oceanía"
+    ]    
     continente = ""
-    while not continente:
-        continente = input("Continente: ").strip()
-        if not continente:
-            print("⚠ El continente no puede estar vacío.")
+
+    while True:
+        print("Continentes disponibles:")
+        for i, cont in enumerate(continentes, start=1):
+            print(f"{i}. {cont}")
+        cont_opcion = input("Seleccione el número del continente: ").strip()
+        if cont_opcion.isdigit():
+            cont_index = int(cont_opcion) - 1
+            if 0 <= cont_index < len(continentes):
+                continente = continentes[cont_index]
+                break
+        print("⚠ Opción inválida. Por favor, intente nuevamente.")
     
     # Crear y agregar el país
     nuevo_pais = {
@@ -303,11 +319,27 @@ def filtrar_por_continente(paises):
         paises (list): Lista de países
     """
     print("\n--- FILTRAR POR CONTINENTE ---")
-    continente = input("Continente: ").strip()
-    
-    if not continente:
-        print("⚠ Debe ingresar un continente.")
-        return
+    continentes = [
+        "África",
+        "América del Norte",
+        "América del Sur",
+        "Antártida",
+        "Asia",
+        "Europa",
+        "Oceanía"
+    ]
+    while True:
+        print("Continentes disponibles:")
+        for i, cont in enumerate(continentes, start=1):
+            print(f"{i}. {cont}")
+
+        opcion = input("Seleccione el número del continente: ").strip()
+        if opcion.isdigit():
+            cont_index = int(opcion) - 1
+            if 0 <= cont_index < len(continentes):
+                continente = continentes[cont_index]
+                break
+        print("⚠ Opción inválida. Por favor, intente nuevamente.")
     
     resultados = []
     for pais in paises:
@@ -395,6 +427,295 @@ def filtrar_por_superficie(paises):
     print(f"\n✓ Países con superficie entre {minimo:,} y {maximo:,} km²:\n")
     mostrar_paises(resultados)
 
+def filtrar_paises(paises):
+    """
+    Filtra países según el criterio seleccionado.
+    
+    Args:
+        paises (list): Lista de países
+    """
+    print("\n--- FILTRAR PAÍSES ---")
+    print("1. Por continente")
+    print("2. Por población")
+    print("3. Por superficie")
+    
+    opcion = input("\nSeleccione criterio: ").strip()
+    
+    if opcion == '1':
+        filtrar_por_continente(paises)
+    elif opcion == '2':
+        filtrar_por_poblacion(paises)
+    elif opcion == '3':
+        filtrar_por_superficie(paises)
+    else:
+        print("⚠ Opción inválida.")
+
+# ==================== FUNCIONES DE ORDENAMIENTO ====================
+
+def ordenar_por_nombre(paises):
+    """
+    Ordena países por nombre usando bubble sort.
+    
+    Args:
+        paises (list): Lista de países
+    
+    Returns:
+        list: Lista ordenada
+    """
+    paises_copia = paises[:]
+    n = len(paises_copia)
+    
+    for i in range(n):
+        for j in range(0, n - i - 1):
+            if paises_copia[j]['nombre'] > paises_copia[j + 1]['nombre']:
+                paises_copia[j], paises_copia[j + 1] = paises_copia[j + 1], paises_copia[j]
+    
+    return paises_copia
+
+
+def ordenar_por_poblacion(paises, descendente=False):
+    """
+    Ordena países por población.
+    
+    Args:
+        paises (list): Lista de países
+        descendente (bool): Si True, ordena de mayor a menor
+    
+    Returns:
+        list: Lista ordenada
+    """
+    paises_copia = paises[:]
+    n = len(paises_copia)
+    
+    for i in range(n):
+        for j in range(0, n - i - 1):
+            if descendente:
+                condicion = paises_copia[j]['poblacion'] < paises_copia[j + 1]['poblacion']
+            else:
+                condicion = paises_copia[j]['poblacion'] > paises_copia[j + 1]['poblacion']
+            
+            if condicion:
+                paises_copia[j], paises_copia[j + 1] = paises_copia[j + 1], paises_copia[j]
+    
+    return paises_copia
+
+
+def ordenar_por_superficie(paises, descendente=False):
+    """
+    Ordena países por superficie.
+    
+    Args:
+        paises (list): Lista de países
+        descendente (bool): Si True, ordena de mayor a menor
+    
+    Returns:
+        list: Lista ordenada
+    """
+    paises_copia = paises[:]
+    n = len(paises_copia)
+    
+    for i in range(n):
+        for j in range(0, n - i - 1):
+            if descendente:
+                condicion = paises_copia[j]['superficie'] < paises_copia[j + 1]['superficie']
+            else:
+                condicion = paises_copia[j]['superficie'] > paises_copia[j + 1]['superficie']
+            
+            if condicion:
+                paises_copia[j], paises_copia[j + 1] = paises_copia[j + 1], paises_copia[j]
+    
+    return paises_copia
+
+
+def ordenar_paises(paises):
+    """
+    Ordena países según el criterio seleccionado.
+    
+    Args:
+        paises (list): Lista de países
+    """
+    print("\n--- ORDENAR PAÍSES ---")
+    print("1. Por nombre")
+    print("2. Por población")
+    print("3. Por superficie")
+    
+    opcion = input("\nSeleccione criterio: ").strip()
+    
+    if opcion == '1':
+        paises_ordenados = ordenar_por_nombre(paises)
+        print("\n✓ Países ordenados por nombre:\n")
+        mostrar_paises(paises_ordenados)
+        
+    elif opcion == '2':
+        orden = input("¿Ascendente (a) o Descendente (d)?: ").strip().lower()
+        descendente = (orden == 'd')
+        paises_ordenados = ordenar_por_poblacion(paises, descendente)
+        tipo_orden = "descendente" if descendente else "ascendente"
+        print(f"\n✓ Países ordenados por población ({tipo_orden}):\n")
+        mostrar_paises(paises_ordenados)
+        
+    elif opcion == '3':
+        orden = input("¿Ascendente (a) o Descendente (d)?: ").strip().lower()
+        descendente = (orden == 'd')
+        paises_ordenados = ordenar_por_superficie(paises, descendente)
+        tipo_orden = "descendente" if descendente else "ascendente"
+        print(f"\n✓ Países ordenados por superficie ({tipo_orden}):\n")
+        mostrar_paises(paises_ordenados)
+        
+    else:
+        print("⚠ Opción inválida.")
+
+
+# ==================== FUNCIONES DE ESTADÍSTICAS ====================
+
+def encontrar_maximo_poblacion(paises):
+    """
+    Encuentra el país con mayor población.
+    
+    Args:
+        paises (list): Lista de países
+    
+    Returns:
+        dict: País con mayor población
+    """
+    if len(paises) == 0:
+        return None
+    
+    max_pais = paises[0]
+    for pais in paises:
+        if pais['poblacion'] > max_pais['poblacion']:
+            max_pais = pais
+    
+    return max_pais
+
+
+def encontrar_minimo_poblacion(paises):
+    """
+    Encuentra el país con menor población.
+    
+    Args:
+        paises (list): Lista de países
+    
+    Returns:
+        dict: País con menor población
+    """
+    if len(paises) == 0:
+        return None
+    
+    min_pais = paises[0]
+    for pais in paises:
+        if pais['poblacion'] < min_pais['poblacion']:
+            min_pais = pais
+    
+    return min_pais
+
+
+def calcular_promedio_poblacion(paises):
+    """
+    Calcula el promedio de población de los países.
+    
+    Args:
+        paises (list): Lista de países
+    
+    Returns:
+        float: Promedio de población
+    """
+    if len(paises) == 0:
+        return 0
+    
+    suma = 0
+    for pais in paises:
+        suma = suma + pais['poblacion']
+    
+    return suma / len(paises)
+
+
+def calcular_promedio_superficie(paises):
+    """
+    Calcula el promedio de superficie de los países.
+    
+    Args:
+        paises (list): Lista de países
+    
+    Returns:
+        float: Promedio de superficie
+    """
+    if len(paises) == 0:
+        return 0
+    
+    suma = 0
+    for pais in paises:
+        suma = suma + pais['superficie']
+    
+    return suma / len(paises)
+
+
+def contar_por_continente(paises):
+    """
+    Cuenta la cantidad de países por continente.
+    
+    Args:
+        paises (list): Lista de países
+    
+    Returns:
+        dict: Diccionario con continentes y cantidades
+    """
+    continentes = {}
+    
+    for pais in paises:
+        cont = pais['continente']
+        if cont in continentes:
+            continentes[cont] = continentes[cont] + 1
+        else:
+            continentes[cont] = 1
+    
+    return continentes
+
+
+def mostrar_estadisticas(paises):
+    """
+    Calcula y muestra estadísticas sobre los países.
+    
+    Args:
+        paises (list): Lista de países
+    """
+    if len(paises) == 0:
+        print("⚠ No hay países en el sistema.")
+        return
+    
+    print("\n" + "="*50)
+    print("ESTADÍSTICAS GENERALES")
+    print("="*50)
+    
+    # País con mayor y menor población
+    pais_max_pob = encontrar_maximo_poblacion(paises)
+    pais_min_pob = encontrar_minimo_poblacion(paises)
+    
+    print(f"\n📊 POBLACIÓN:")
+    print(f"  • Mayor: {pais_max_pob['nombre']} ({pais_max_pob['poblacion']:,} habitantes)")
+    print(f"  • Menor: {pais_min_pob['nombre']} ({pais_min_pob['poblacion']:,} habitantes)")
+    
+    # Promedio de población
+    promedio_pob = calcular_promedio_poblacion(paises)
+    print(f"  • Promedio: {promedio_pob:,.0f} habitantes")
+    
+    # Promedio de superficie
+    promedio_sup = calcular_promedio_superficie(paises)
+    print(f"\n🗺️  SUPERFICIE:")
+    print(f"  • Promedio: {promedio_sup:,.0f} km²")
+    
+    # Cantidad de países por continente
+    print(f"\n🌍 PAÍSES POR CONTINENTE:")
+    continentes = contar_por_continente(paises)
+    
+    # Ordenar continentes alfabéticamente
+    continentes_ordenados = sorted(continentes.items())
+    
+    for continente, cantidad in continentes_ordenados:
+        print(f"  • {continente}: {cantidad} país(es)")
+    
+    print("\n" + "="*50)
+
 # ==================== FUNCIONES DE VISUALIZACIÓN ====================
 
 def mostrar_paises(paises):
@@ -425,9 +746,10 @@ def mostrar_menu():
     print("1.  Agregar país")
     print("2.  Actualizar país")
     print("3.  Buscar país")
-    print("4.  Filtrar por continente")
-    print("5.  Filtrar por población")
-    print("6.  Filtrar por superficie")
+    print("4.  Filtrar paises")
+    print("5.  Ordenar países")
+    print("6.  Mostrar estadísticas")
+    print("7.  Listar todos los países")
     print("0.  Salir")
     print("="*50)
 
@@ -445,24 +767,28 @@ def menu():
     while True:
         mostrar_menu()
         opcion = input("\nSeleccione una opción: ").strip()
-        
-        if opcion == '1':
-            agregar_pais(paises)
-        elif opcion == '2':
-            actualizar_pais(paises)
-        elif opcion == '3':
-            buscar_pais(paises)
-        elif opcion == '4':
-            filtrar_por_continente(paises)
-        elif opcion == '5':
-            filtrar_por_poblacion(paises)
-        elif opcion == '6':
-            filtrar_por_superficie(paises)
-        elif opcion == '0':
-            print("\n¡Hasta pronto!")
-            break
-        else:
-            print("⚠ Opción inválida. Intente nuevamente.")
+
+        match opcion:
+            case '1':
+                agregar_pais(paises)
+            case '2':
+                actualizar_pais(paises)
+            case '3':
+                buscar_pais(paises)
+            case '4':
+                filtrar_paises(paises)        
+            case '5':
+                ordenar_paises(paises)
+            case '6':
+                mostrar_estadisticas(paises)
+            case '7':
+                print("\n--- TODOS LOS PAÍSES ---\n")
+                mostrar_paises(paises)
+            case '0':
+                print("\n¡Hasta pronto!")
+                break
+            case _:
+                print("⚠ Opción inválida. Intente nuevamente.")
 
 
 # ==================== EJECUCIÓN DEL PROGRAMA ====================
