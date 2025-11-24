@@ -8,6 +8,8 @@
 
 **Trabajo Práctico Integrador - Programación 1**
 
+</div>
+
 ### 🔹 `mostrar_menu()`
 
 > **Descripción:** Muestra el menú principal del sistema.
@@ -27,12 +29,10 @@
 | **1**  | 📝 Agregar país            |
 | **2**  | 🔄 Actualizar país         |
 | **3**  | 🔍 Buscar país             |
-| **4**  | 🌍 Filtrar por continente  |
-| **5**  | 👥 Filtrar por población   |
-| **6**  | 📏 Filtrar por superficie  |
-| **7**  | 🔢 Ordenar países          |
-| **8**  | 📊 Mostrar estadísticas    |
-| **9**  | 📋 Listar todos los países |
+| **4**  | 🌍 Filtrar países          |
+| **5**  | 🔢 Ordenar países          |
+| **6**  | 📊 Mostrar estadísticas    |
+| **7**  | 📋 Listar todos los países |
 | **0**  | 🚪 Salir                   |
 
 #### 💡 Ejemplo de Salida
@@ -44,12 +44,10 @@ SISTEMA DE GESTIÓN DE PAÍSES
 1.  Agregar país
 2.  Actualizar país
 3.  Buscar país
-4.  Filtrar por continente
-5.  Filtrar por población
-6.  Filtrar por superficie
-7.  Ordenar países
-8.  Mostrar estadísticas
-9.  Listar todos los países
+4.  Filtrar países
+5.  Ordenar países
+6.  Mostrar estadísticas
+7.  Listar todos los países
 0.  Salir
 ==================================================
 ```
@@ -116,19 +114,35 @@ Alemania             83,149,300      357,022              Europa
 
 ---
 
-### 🌍 Caso 3: Filtrar por Continente
+### 🌍 Caso 3: Filtrar Países
 
 ```python
 Seleccione una opción: 4
 
---- FILTRAR POR CONTINENTE ---
-Continente: asia
+--- FILTRAR PAÍSES ---
+1. Por continente
+2. Por población
+3. Por superficie
 
-✓ Países en asia:
+Seleccione criterio: 1
+
+--- FILTRAR POR CONTINENTE ---
+Continentes disponibles:
+1. África
+2. América del Norte
+3. América del Sur
+4. Antártida
+5. Asia
+6. Europa
+7. Oceanía
+Seleccione el número del continente: 3
+
+✓ Países en América del Sur:
 
 NOMBRE               POBLACIÓN       SUPERFICIE (km²)     CONTINENTE
 ----------------------------------------------------------------------
-Japón                125,800,000     377,975              Asia
+Argentina            45,376,763      2,780,400            América del Sur
+Brasil               213,993,437     8,515,767            América del Sur
 ```
 
 ---
@@ -210,18 +224,25 @@ Nueva superficie en km² (Enter para mantener):
 ### 👥 Caso 7: Filtrar por Rango de Población
 
 ```python
-Seleccione una opción: 5
+Seleccione una opción: 4
+
+--- FILTRAR PAÍSES ---
+1. Por continente
+2. Por población
+3. Por superficie
+
+Seleccione criterio: 2
 
 --- FILTRAR POR POBLACIÓN ---
-Población mínima: 80000000
-Población máxima: 150000000
+Población mínima: 100000000
+Población máxima: 500000000
 
-✓ Países con población entre 80,000,000 y 150,000,000:
+✓ Países con población entre 100,000,000 y 500,000,000:
 
 NOMBRE               POBLACIÓN       SUPERFICIE (km²)     CONTINENTE
 ----------------------------------------------------------------------
-Alemania             83,149,300      357,022              Europa
 Japón                125,800,000     377,975              Asia
+Brasil               213,993,437     8,515,767            América del Sur
 ```
 
 ---
@@ -317,10 +338,6 @@ proyecto/
    - Los datos se guardan automáticamente después de agregar o actualizar
    - No cerrar el programa abruptamente durante operaciones
 
-5. **🌍 Nombres de Continentes**
-   - Mantener consistencia en los nombres (América, Europa, Asia, África, Oceanía)
-   - Usar la misma capitalización
-
 ---
 
 ## 🔐 Limitaciones Conocidas
@@ -414,6 +431,6 @@ import os  # Operaciones con sistema de archivos
 
 **Hecho con ❤️ por Leandro Andriani y Luis Almeida**
 
-_Trabajo Práctico Integrador - Programación 1 - 2024_
+_Trabajo Práctico Integrador - Programación 1 - 2025_
 
 ---
