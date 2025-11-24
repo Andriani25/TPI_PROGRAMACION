@@ -746,7 +746,7 @@ def mostrar_menu():
     print("1.  Agregar país")
     print("2.  Actualizar país")
     print("3.  Buscar país")
-    print("4.  Filtrar paises")
+    print("4.  Filtrar países")
     print("5.  Ordenar países")
     print("6.  Mostrar estadísticas")
     print("7.  Listar todos los países")
